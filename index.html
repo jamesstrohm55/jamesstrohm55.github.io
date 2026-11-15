@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- James Dumar Strohm | November 14, 2026
+       A personal portfolio featuring selected projects and a visitor greeting. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="James Dumar Strohm's software engineering portfolio, featuring web applications and a C++ chess engine.">
+  <title>James Dumar Strohm | Software Engineer</title>
+  <style>
+    :root { color-scheme: light; --ink: #152b3c; --muted: #4e6170; --accent: #00695c; --line: #d6e0e5; --surface: #f1f6f7; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; color: var(--ink); font: 16px/1.6 system-ui, sans-serif; }
+    a { color: var(--accent); text-underline-offset: .2em; }
+    a:hover { text-decoration-thickness: 2px; }
+    :focus-visible { outline: 3px solid #007f74; outline-offset: 5px; }
+    [hidden] { display: none !important; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+    .skip { position: absolute; top: -100px; padding: 12px; background: white; }
+    .skip:focus { top: 8px; z-index: 2; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 24px; border-bottom: 1px solid var(--line); }
+    .brand { color: var(--ink); font-weight: 750; text-decoration: none; letter-spacing: .06em; }
+    nav { display: flex; flex-wrap: wrap; gap: 28px; }
+    nav a { color: var(--ink); text-decoration: none; padding-block: 8px; }
+    .hero { padding-block: 52px 64px; border-bottom: 1px solid var(--line); }
+    #welcome { color: var(--accent); font-weight: 600; overflow-wrap: anywhere; }
+    .eyebrow { margin: 32px 0 12px; color: var(--muted); font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { max-width: 900px; margin: 0 0 20px; font-size: clamp(2.6rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: -.05em; text-wrap: balance; }
+    .lead { margin: 0; max-width: 42ch; font-size: 1.25rem; color: var(--muted); }
+    section { padding-block: 56px; scroll-margin-top: 24px; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 20px; font-size: 2rem; line-height: 1.2; letter-spacing: -.025em; }
+    h3 { margin: 18px 0 8px; font-size: 1.2rem; }
+    p { max-width: 68ch; }
+    .section-number { color: var(--accent); font-size: .8rem; letter-spacing: .08em; display: block; margin-bottom: 12px; }
+    .about-grid, .contact-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+    .about-copy p:first-child { margin-top: 0; }
+    .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 32px; }
+    .project { min-width: 0; }
+    .project a { display: block; text-decoration: none; color: var(--ink); }
+    .project a:hover h3 { text-decoration: underline; text-underline-offset: .2em; }
+    .project img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+    .project p { color: var(--muted); margin: 0 0 16px; }
+    .project .tech { color: var(--accent); font-size: .85rem; font-weight: 600; }
+    .contact-note { color: var(--muted); }
+    .contact-note a { overflow-wrap: anywhere; }
+    form { display: grid; gap: 20px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    input, textarea { width: 100%; border: 1px solid #879ba7; border-radius: 4px; padding: 12px; font: inherit; color: var(--ink); background: #fff; }
+    textarea { resize: vertical; min-height: 150px; }
+    button, .draft-link { justify-self: start; padding: 12px 22px; border: 0; border-radius: 4px; background: var(--ink); color: white; font: inherit; font-weight: 600; cursor: pointer; }
+    button:hover, .draft-link:hover { background: var(--accent); }
+    .draft-link { display: inline-block; text-decoration: none; }
+    #form-status { margin: 0; color: var(--accent); }
+    footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-block: 24px; color: var(--muted); font-size: .9rem; }
+    footer p { margin: 0; }
+    @media (max-width: 700px) {
+      .wrap { width: calc(100% - 36px); }
+      .topbar { align-items: flex-start; gap: 16px; }
+      nav { gap: 16px; font-size: .9rem; }
+      .hero { padding-block: 32px 44px; }
+      section { padding-block: 40px; }
+      .about-grid, .contact-grid, .project-grid, .field-row { grid-template-columns: 1fr; gap: 24px; }
+      .project-grid { gap: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="wrap">
+    <header>
+      <div class="topbar">
+        <a class="brand" href="#top" aria-label="James Dumar Strohm, back to top">JDS.</a>
+        <nav aria-label="Main navigation">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="hero" id="top">
+        <p id="welcome" role="status">Welcome to my portfolio.</p>
+        <p class="eyebrow">Software engineer</p>
+        <h1>James Dumar Strohm</h1>
+        <p class="lead">Web applications, useful tools, and the occasional chess engine.</p>
+      </div>
+    </header>
+    <main id="main">
+      <section id="about" class="about-grid" aria-labelledby="about-heading">
+        <div><span class="section-number" aria-hidden="true">01 / ABOUT</span><h2 id="about-heading">About me</h2></div>
+        <div class="about-copy">
+          <p>I'm James, a software engineer with five years of experience. JavaScript has been a central part of my work, and my projects also explore Python, C++, and modern web development.</p>
+          <p>I enjoy turning ideas into working applications. This portfolio brings together a few of my projects, from tools that organize everyday tasks to a chess engine built around game logic.</p>
+        </div>
+      </section>
+      <section id="projects" aria-labelledby="projects-heading">
+        <span class="section-number" aria-hidden="true">02 / PROJECTS</span>
+        <h2 id="projects-heading">Selected projects</h2>
+        <p>Three projects from my GitHub. Select an image to explore the source code and documentation.</p>
+        <div class="project-grid">
+          <article class="project">
+            <a href="https://github.com/jamesstrohm55/ALFRED">
+              <img src="assets/alfred.svg" width="640" height="400" alt="ALFRED project cover">
+              <h3>ALFRED ↗</h3>
+            </a>
+            <p>A modular AI assistant with an API, voice interface, desktop app, and persistent conversation memory.</p>
+            <span class="tech">Python · FastAPI · PySide6</span>
+          </article>
+          <article class="project">
+            <a href="https://github.com/jamesstrohm55/Chess_CPP">
+              <img src="assets/chess.svg" width="640" height="400" alt="C++ Chess Engine project cover">
+              <h3>C++ Chess Engine ↗</h3>
+            </a>
+            <p>A playable chess engine with console and graphical interfaces, legal move generation, and a computer opponent.</p>
+            <span class="tech">C++17 · SDL2 · WebAssembly</span>
+          </article>
+          <article class="project">
+            <a href="https://github.com/jamesstrohm55/portfolio">
+              <img src="assets/portfolio.svg" width="640" height="400" alt="Personal Portfolio project cover">
+              <h3>Personal Portfolio ↗</h3>
+            </a>
+            <p>My developer portfolio with project pages, interactive visuals, and a responsive design built with vanilla web technologies.</p>
+            <span class="tech">HTML · CSS · JavaScript</span>
+          </article>
+        </div>
+      </section>
+      <section id="contact" class="contact-grid" aria-labelledby="contact-heading">
+        <div>
+          <span class="section-number" aria-hidden="true">03 / CONTACT</span>
+          <h2 id="contact-heading">Get in touch</h2>
+          <p class="contact-note">Have a project or a question? Fill out the form to prepare a draft, then open it in your email app to send.</p>
+          <p class="contact-note">Or email me directly at <a href="mailto:jamesstrohm98@gmail.com">jamesstrohm98@gmail.com</a>.</p>
+        </div>
+        <!-- The form prepares an email draft; it does not send messages itself. -->
+        <form id="contact-form">
+          <div class="field-row">
+            <div><label for="sender-name">Your name</label><input id="sender-name" name="name" autocomplete="name" maxlength="100" required></div>
+            <div><label for="sender-email">Email address</label><input id="sender-email" name="email" type="email" autocomplete="email" maxlength="254" required></div>
+          </div>
+          <div><label for="subject">Subject</label><input id="subject" name="subject" maxlength="150" required></div>
+          <div><label for="message">Message</label><textarea id="message" name="message" maxlength="2000" required></textarea></div>
+          <button type="submit">Prepare email</button>
+          <p id="form-status" role="status"></p>
+          <a id="email-draft" class="draft-link" hidden>Open email draft ↗</a>
+        </form>
+      </section>
+    </main>
+    <footer><p>James Dumar Strohm</p><a href="https://github.com/jamesstrohm55">GitHub profile ↗</a></footer>
+  </div>
+  <script>
+    // Keep visitor input as text and use a friendly default if the prompt is canceled.
+    const visitorName = prompt("What is your name?");
+    const displayName = visitorName && visitorName.trim() ? visitorName.trim() : "visitor";
+    document.getElementById("welcome").textContent = "Welcome, " + displayName + ".";
+
+    const form = document.getElementById("contact-form");
+    const draftLink = document.getElementById("email-draft");
+    const formStatus = document.getElementById("form-status");
+
+    // Encode each mailto value so punctuation and newlines remain part of the message.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const sender = form.elements.name.value.trim();
+      const email = form.elements.email.value.trim();
+      const subject = form.elements.subject.value.trim();
+      const message = form.elements.message.value.trim();
+      if (!sender || !subject || !message) {
+        formStatus.textContent = "Please enter a name, subject, and message, not just spaces.";
+        return;
+      }
+      const body = "From: " + sender + " <" + email + ">\n\n" + message;
+      draftLink.href = "mailto:jamesstrohm98@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      draftLink.hidden = false;
+      formStatus.textContent = "Your draft is ready. Open it in your email app to review and send.";
+    });
+
+    // Editing a field invalidates the previous draft so outdated text cannot be sent.
+    form.addEventListener("input", function () {
+      draftLink.hidden = true;
+      draftLink.removeAttribute("href");
+      formStatus.textContent = "";
+    });
+  </script>
+</body>
+</html>
