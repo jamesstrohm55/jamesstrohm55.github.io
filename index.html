@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- James Dumar Strohm | November 14, 2026
-       A personal portfolio featuring selected projects and a visitor greeting. -->
+  <!-- James Dumar Strohm | November 20, 2026
+       A personal portfolio with conditional resources, loop-generated skills,
+       a dark mode control, and a personalized contact confirmation. -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="James Dumar Strohm's software engineering portfolio, featuring web applications and a C++ chess engine.">
   <title>James Dumar Strohm | Software Engineer</title>
   <style>
-    :root { color-scheme: light; --ink: #152b3c; --muted: #4e6170; --accent: #00695c; --line: #d6e0e5; --surface: #f1f6f7; }
+    :root { color-scheme: light; --ink: #152b3c; --muted: #4e6170; --accent: #00695c; --line: #d6e0e5; --surface: #f1f6f7; --background: #fff; --button-text: #fff; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #fff; color: var(--ink); font: 16px/1.6 system-ui, sans-serif; }
+    body { margin: 0; background: var(--background); color: var(--ink); font: 16px/1.6 system-ui, sans-serif; }
     a { color: var(--accent); text-underline-offset: .2em; }
     a:hover { text-decoration-thickness: 2px; }
     :focus-visible { outline: 3px solid #007f74; outline-offset: 5px; }
     [hidden] { display: none !important; }
     .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
-    .skip { position: absolute; top: -100px; padding: 12px; background: white; }
+    .skip { position: absolute; top: -100px; padding: 12px; background: var(--background); }
     .skip:focus { top: 8px; z-index: 2; }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 24px; border-bottom: 1px solid var(--line); }
     .brand { color: var(--ink); font-weight: 750; text-decoration: none; letter-spacing: .06em; }
@@ -46,21 +47,32 @@
     form { display: grid; gap: 20px; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     label { display: block; font-weight: 600; margin-bottom: 6px; }
-    input, textarea { width: 100%; border: 1px solid #879ba7; border-radius: 4px; padding: 12px; font: inherit; color: var(--ink); background: #fff; }
+    input, textarea { width: 100%; border: 1px solid #879ba7; border-radius: 4px; padding: 12px; font: inherit; color: var(--ink); background: var(--background); }
     textarea { resize: vertical; min-height: 150px; }
-    button, .draft-link { justify-self: start; padding: 12px 22px; border: 0; border-radius: 4px; background: var(--ink); color: white; font: inherit; font-weight: 600; cursor: pointer; }
-    button:hover, .draft-link:hover { background: var(--accent); }
+    button, .draft-link { justify-self: start; padding: 12px 22px; border: 0; border-radius: 4px; background: var(--ink); color: var(--background); font: inherit; font-weight: 600; cursor: pointer; }
+    button:hover, .draft-link:hover { background: var(--accent); color: var(--button-text); }
     .draft-link { display: inline-block; text-decoration: none; }
     #form-status { margin: 0; color: var(--accent); }
     footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-block: 24px; color: var(--muted); font-size: .9rem; }
     footer p { margin: 0; }
+    /* Theme tokens keep text, links, fields, and resource panels readable together. */
+    body.dark-mode { color-scheme: dark; --background: #101820; --ink: #edf4f8;
+      --muted: #b9c9d3; --accent: #72ddc8; --line: #435766; --surface: #1b2a35; --button-text: #101820; }
+    .theme-control { display: flex; align-items: center; gap: 8px; margin: 0; white-space: nowrap; }
+    .theme-control input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
+    .topbar { flex-wrap: wrap; }
+    .resource-group { padding: 24px; margin-top: 24px; border: 1px solid var(--line); border-left: 4px solid var(--accent); background: var(--surface); }
+    .resource-group > h3 { margin-top: 0; }
+    .featured-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .featured-links img { display: block; width: 100%; height: auto; margin-bottom: 8px; }
+    #skills { padding-left: 24px; }
     @media (max-width: 700px) {
       .wrap { width: calc(100% - 36px); }
       .topbar { align-items: flex-start; gap: 16px; }
       nav { gap: 16px; font-size: .9rem; }
       .hero { padding-block: 32px 44px; }
       section { padding-block: 40px; }
-      .about-grid, .contact-grid, .project-grid, .field-row { grid-template-columns: 1fr; gap: 24px; }
+      .about-grid, .contact-grid, .project-grid, .field-row, .featured-links { grid-template-columns: 1fr; gap: 24px; }
       .project-grid { gap: 36px; }
     }
   </style>
@@ -76,6 +88,7 @@
           <a href="#projects">Projects</a>
           <a href="#contact">Contact</a>
         </nav>
+        <label class="theme-control" for="dark-mode"><input type="checkbox" id="dark-mode">Dark Mode</label>
       </div>
       <div class="hero" id="top">
         <p id="welcome" role="status">Welcome to my portfolio.</p>
@@ -90,10 +103,31 @@
         <div class="about-copy">
           <p>I'm James, a software engineer with five years of experience. JavaScript has been a central part of my work, and my projects also explore Python, C++, and modern web development.</p>
           <p>I enjoy turning ideas into working applications. This portfolio brings together a few of my projects, from tools that organize everyday tasks to a chess engine built around game logic.</p>
+          <h3>Skills and technologies</h3>
+          <ul id="skills"></ul>
+        </div>
+      </section>
+      <section id="featured" aria-labelledby="featured-heading">
+        <span class="section-number" aria-hidden="true">02 / FEATURED</span>
+        <h2 id="featured-heading">Featured Content</h2>
+        <div id="university-resources" class="resource-group">
+          <h3>University Resources</h3>
+          <p>Explore my software development program at ECPI University.</p>
+          <ul>
+            <li><a href="https://www.ecpi.edu/programs/software-development-bachelor-degree">Software Development program home page</a></li>
+            <li><a href="https://www.ecpi.edu/online/programs/software-development-bachelor-degree">Online Software Development program</a></li>
+          </ul>
+        </div>
+        <div id="personal-projects" class="resource-group">
+          <h3>Personal Projects</h3>
+          <div class="featured-links">
+            <a href="https://github.com/jamesstrohm55/ALFRED"><img src="assets/alfred.svg" width="640" height="400" alt="Explore ALFRED on GitHub">ALFRED ↗</a>
+            <a href="https://github.com/jamesstrohm55/Chess_CPP"><img src="assets/chess.svg" width="640" height="400" alt="Explore the C++ Chess Engine on GitHub">C++ Chess Engine ↗</a>
+          </div>
         </div>
       </section>
       <section id="projects" aria-labelledby="projects-heading">
-        <span class="section-number" aria-hidden="true">02 / PROJECTS</span>
+        <span class="section-number" aria-hidden="true">03 / PROJECTS</span>
         <h2 id="projects-heading">Selected projects</h2>
         <p>Three projects from my GitHub. Select an image to explore the source code and documentation.</p>
         <div class="project-grid">
@@ -125,7 +159,7 @@
       </section>
       <section id="contact" class="contact-grid" aria-labelledby="contact-heading">
         <div>
-          <span class="section-number" aria-hidden="true">03 / CONTACT</span>
+          <span class="section-number" aria-hidden="true">04 / CONTACT</span>
           <h2 id="contact-heading">Get in touch</h2>
           <p class="contact-note">Have a project or a question? Fill out the form to prepare a draft, then open it in your email app to send.</p>
           <p class="contact-note">Or email me directly at <a href="mailto:jamesstrohm98@gmail.com">jamesstrohm98@gmail.com</a>.</p>
@@ -138,7 +172,7 @@
           </div>
           <div><label for="subject">Subject</label><input id="subject" name="subject" maxlength="150" required></div>
           <div><label for="message">Message</label><textarea id="message" name="message" maxlength="2000" required></textarea></div>
-          <button type="submit">Prepare email</button>
+          <button type="submit">Submit</button>
           <p id="form-status" role="status"></p>
           <a id="email-draft" class="draft-link" hidden>Open email draft ↗</a>
         </form>
@@ -152,13 +186,41 @@
     const displayName = visitorName && visitorName.trim() ? visitorName.trim() : "visitor";
     document.getElementById("welcome").textContent = "Welcome, " + displayName + ".";
 
+    // Count only cards in Projects, not the image links in Featured Content.
+    const projectCount = document.querySelectorAll("#projects .project").length;
+    const universityResources = document.getElementById("university-resources");
+    const personalProjects = document.getElementById("personal-projects");
+    if (projectCount < 3) {
+      universityResources.hidden = false;
+      personalProjects.hidden = false;
+    } else {
+      universityResources.hidden = true;
+      personalProjects.hidden = false;
+    }
+
+    // Build the About section's bulleted list from an array using a loop.
+    const skills = ["HTML", "CSS", "JavaScript", "Git", "GitHub"];
+    const skillsList = document.getElementById("skills");
+    for (let i = 0; i < skills.length; i++) {
+      const item = document.createElement("li");
+      item.textContent = skills[i];
+      skillsList.appendChild(item);
+    }
+
+    // The labeled checkbox supports both pointer and keyboard theme changes.
+    const darkMode = document.getElementById("dark-mode");
+    darkMode.addEventListener("change", function () {
+      document.body.classList.toggle("dark-mode", darkMode.checked);
+    });
+
     const form = document.getElementById("contact-form");
     const draftLink = document.getElementById("email-draft");
     const formStatus = document.getElementById("form-status");
 
     // Encode each mailto value so punctuation and newlines remain part of the message.
-    form.addEventListener("submit", function (event) {
+    function prepareEmail(event) {
       event.preventDefault();
+      if (!form.reportValidity()) return;
       const sender = form.elements.name.value.trim();
       const email = form.elements.email.value.trim();
       const subject = form.elements.subject.value.trim();
@@ -171,7 +233,12 @@
       draftLink.href = "mailto:jamesstrohm98@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
       draftLink.hidden = false;
       formStatus.textContent = "Your draft is ready. Open it in your email app to review and send.";
-    });
+      alert("Thank you, " + sender + "! Your message is ready. Open the email draft to send it.");
+    }
+    // Prevent navigation on click and confirm the visitor's prepared message.
+    const submitButton = document.querySelector("#contact-form button[type=submit]");
+    submitButton.addEventListener("click", prepareEmail);
+    form.addEventListener("submit", prepareEmail);
 
     // Editing a field invalidates the previous draft so outdated text cannot be sent.
     form.addEventListener("input", function () {
